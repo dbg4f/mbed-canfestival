@@ -725,11 +725,13 @@ class NodeManager:
                             pass
                     else:
                         node.SetEntry(index, subIndex, value)
-            elif name in ["comment", "save", "buffer_size"]:
+            elif name in ["comment", "save", "buffer_size", "modbus_mapping"]:
                 if editor == "option":
                     value = value == "Yes"
                 if name == "save":
                     node.SetParamsEntry(index, subIndex, save = value)
+                elif name == "modbus_mapping":
+                    node.SetParamsEntry(index, subIndex, modbus_mapping = value)
                 elif name == "comment":
                     node.SetParamsEntry(index, subIndex, comment = value)
 		elif name == "buffer_size":
@@ -1052,9 +1054,10 @@ class NodeManager:
 		    dic["buffer_size"] = ""
                 dic["access"] = AccessType[infos["access"]]
                 dic["save"] = OptionType[dic["save"]]
+                dic["modbus_mapping"] = OptionType[dic["modbus_mapping"]]
                 editor = {"subindex" : None, "name" : None, 
                           "type" : None, "value" : None,
-                          "access" : None, "save" : "option", 
+                          "access" : None, "save" : "option", "modbus_mapping" : "option",
                           "callback" : "option", "comment" : "string", "buffer_size" : "string"}
                 if isinstance(values, ListType) and i == 0:
                     if 0x1600 <= index <= 0x17FF or 0x1A00 <= index <= 0x1C00:

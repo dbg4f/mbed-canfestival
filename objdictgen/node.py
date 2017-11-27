@@ -38,7 +38,7 @@ CustomisableTypes = [(0x02, 0), (0x03, 0), (0x04, 0), (0x05, 0), (0x06, 0), (0x0
     (0x13, 0), (0x14, 0), (0x15, 0), (0x16, 0), (0x18, 0), (0x19, 0), (0x1A, 0),
     (0x1B, 0)]
 
-DefaultParams = {"comment" : "", "save" : False, "buffer_size" : ""}
+DefaultParams = {"comment" : "", "save" : False, "buffer_size" : "", "modbus_mapping" : True}
 
 #-------------------------------------------------------------------------------
 #                      Dictionary Mapping and Organisation
@@ -588,11 +588,11 @@ class Node:
                 return True
         return False
     
-    def SetParamsEntry(self, index, subIndex = None, comment = None, buffer_size = None, save = None, callback = None):
+    def SetParamsEntry(self, index, subIndex = None, comment = None, buffer_size = None, save = None, callback = None, modbus_mapping = None):
         if not getattr(self, "ParamsDictionary", False):
             self.ParamsDictionary = {}
         if index in self.Dictionary:
-            if (comment != None or save != None or callback != None or buffer_size != None) and index not in self.ParamsDictionary:
+            if (modbus_mapping != None or comment != None or save != None or callback != None or buffer_size != None) and index not in self.ParamsDictionary:
                 self.ParamsDictionary[index] = {}
             if subIndex == None or type(self.Dictionary[index]) != ListType and subIndex == 0:
                 if comment != None:
@@ -601,11 +601,13 @@ class Node:
                     self.ParamsDictionary[index]["buffer_size"] = buffer_size
                 if save != None:
                     self.ParamsDictionary[index]["save"] = save
+                if modbus_mapping != None:
+                    self.ParamsDictionary[index]["modbus_mapping"] = modbus_mapping
                 if callback != None:
                     self.ParamsDictionary[index]["callback"] = callback
                 return True
             elif type(self.Dictionary[index]) == ListType and 0 <= subIndex <= len(self.Dictionary[index]):
-                if (comment != None or save != None or callback != None or buffer_size != None) and subIndex not in self.ParamsDictionary[index]:
+                if (modbus_mapping != None or comment != None or save != None or callback != None or buffer_size != None) and subIndex not in self.ParamsDictionary[index]:
                     self.ParamsDictionary[index][subIndex] = {}
                 if comment != None:
                     self.ParamsDictionary[index][subIndex]["comment"] = comment
@@ -613,6 +615,8 @@ class Node:
                     self.ParamsDictionary[index][subIndex]["buffer_size"] = buffer_size
                 if save != None:
                     self.ParamsDictionary[index][subIndex]["save"] = save
+                if modbus_mapping != None:
+                    self.ParamsDictionary[index][subIndex]["modbus_mapping"] = modbus_mapping
                 return True
         return False
     
