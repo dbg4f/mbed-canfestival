@@ -6,6 +6,8 @@ By Jian-Zhan:
 
 - Add mbed support
 
+- Add "modbus_mapping" option
+
 By fbsder:
 
 - Fix some big endian issues and remove compiler warnings by adding explicit casts. Thanks to Casey Klimasuskas for sharing.

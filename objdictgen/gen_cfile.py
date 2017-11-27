@@ -53,6 +53,12 @@ def FormatName(name):
     wordlist = [word for word in word_model.findall(name) if word != '']
     return "_".join(wordlist)
 
+def CmpIndex(x, y):
+    if x[0] == y[0]:
+        return cmp(x[1], y[1])
+    else:
+        return cmp(x[0], y[0])
+
 # Extract the informations from a given type name
 def GetValidTypeInfos(typename, items=[]):
     if typename in internal_types:
@@ -183,6 +189,8 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
     pointedVariableContent = ""
     strDeclareHeader = ""
     indexContents = {}
+    indexModbusMapping = []
+    indexSaved = []
     for index in listIndex:
         texts["index"] = index
         strIndex = ""
@@ -349,6 +357,18 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
             else:
                 save = ""
             strIndex += "                       { %s%s, %s, %s, (void*)&%s, NULL }%s\n"%(subentry_infos["access"].upper(),save,typeinfos[2],sizeof,UnDigitName(name),sep)
+
+            if typeinfos[2] != "domain":
+                size_in_byte = int("".join([c for c in sizeof if c.isdigit()])) / 8
+                size_in_short = (size_in_byte // 2) + (size_in_byte % 2)
+                if params["save"]:
+                    indexSaved.append( (index, subIndex,
+                                        size_in_byte, size_in_short,
+                                        "((UNS16*)&%s)" % UnDigitName(name) ) )
+                if params["modbus_mapping"]:
+                    indexModbusMapping.append( (index, subIndex,
+                                                size_in_byte, size_in_short,
+                                                "((UNS16*)&%s)" % UnDigitName(name) ) )
             pointer_name = pointers_dict.get((index, subIndex), None)
             if pointer_name is not None:
                 pointedVariableContent += "%s* %s = &%s;\n"%(typeinfos[0], pointer_name, name)
@@ -561,6 +581,35 @@ CO_Data %(NodeName)s_Data = CANOPEN_NODE_DATA_INITIALIZER(%(NodeName)s);
 
 """%texts
 
+    fileContent += """
+const modbus_mapping_t %(NodeName)s_modbus_mapping[] =
+{
+"""%texts
+    modbusRegister = 0
+    for modbusMapping in sorted(indexModbusMapping, CmpIndex):
+        __index, __subindex, __size_in_byte, __size_in_short, __pointer = modbusMapping
+        for i in range(__size_in_short):
+            fileContent += """    { 0x%04X, 0x%04X, 0x%02X, %d, (%s+%d) },
+"""% (modbusRegister, __index, __subindex, __size_in_short, __pointer, i)
+            modbusRegister += 1
+    fileContent += """};
+"""
+
+    fileContent += """
+
+const to_be_saved_t %(NodeName)s_to_be_saved[] =
+{
+"""%texts
+    saveRegister = 0
+    for toBeSaved in sorted(indexSaved, CmpIndex):
+        __index, __subindex, __size_in_byte, __size_in_short, __pointer = toBeSaved
+        for i in range(__size_in_short):
+            fileContent += """    { 0x%04X, 0x%04X, 0x%02X, %d, (%s+%d) },
+"""% (saveRegister, __index, __subindex, __size_in_short, __pointer, i)
+            saveRegister += 1
+    fileContent += """};
+"""
+
 #-------------------------------------------------------------------------------
 #                          Write Header File Content
 #-------------------------------------------------------------------------------
@@ -578,6 +627,27 @@ const indextable * %(NodeName)s_scanIndexOD (CO_Data *d, UNS16 wIndex, UNS32 * e
 
 /* Master node data struct */
 extern CO_Data %(NodeName)s_Data;
+
+typedef struct {
+    UNS16 mbRegister;
+    UNS16 coIndex;
+    UNS8  coSubIndex;
+    UNS32 coEntrySizeInShort;
+    UNS16* pointer;
+} modbus_mapping_t;
+
+extern const modbus_mapping_t %(NodeName)s_modbus_mapping[];
+
+typedef struct {
+    UNS16 svRegister;
+    UNS16 coIndex;
+    UNS8  coSubIndex;
+    UNS32 coEntrySizeInShort;
+    UNS16* pointer;
+} to_be_saved_t;
+
+extern const to_be_saved_t %(NodeName)s_to_be_saved[];
+
 """%texts
     HeaderFileContent += strDeclareHeader
     
