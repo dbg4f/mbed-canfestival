@@ -1,6 +1,12 @@
-This is a fork of the CanFestival-3 project http://dev.automforge.net/CanFestival-3
+This is a fork of fbsder's fork of CanFestival-3 project https://github.com/fbsder/canfestival
 
-Latest work done:
+By Jian-Zhan:
+
+- Rename several header files to avoid conflicts with mbed-os
+
+- Add mbed support
+
+By fbsder:
 
 - Fix some big endian issues and remove compiler warnings by adding explicit casts. Thanks to Casey Klimasuskas for sharing.
 
@@ -17,8 +23,3 @@ Latest work done:
 - solving bugs on sdo block transfer and dcf management
 
 - stm32F0/F1/F4 basic support
-
-Any feedback, comment, is welcome.
-
-You can contact me at : 
-fbeaulier < a t > ingelibre < d o t > fr

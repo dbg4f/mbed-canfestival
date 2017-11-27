@@ -20,23 +20,25 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#ifndef __TIMERSCFG_H__
-#define __TIMERSCFG_H__
+// Add "canopen" to avoid conflicts with mbed-os
+#ifndef __canopen_can_h__
+#define __canopen_can_h__
 
-#include <native/task.h>
-#include <native/timer.h>
-#include <native/mutex.h>
-#include <native/cond.h>
-#include <native/sem.h>
-#include <native/alarm.h>
+#include "applicfg.h"
 
-// Time unit : ns
-// Time resolution : 64bit (~584 years)
-#define TIMEVAL RTIME
-#define TIMEVAL_MAX ~(RTIME)0
-#define MS_TO_TIMEVAL(ms)  rt_timer_ns2ticks((RTIME)ms*1000000)
-#define US_TO_TIMEVAL(us)  rt_timer_ns2ticks((RTIME)us*1000)
+/** 
+ * @brief The CAN message structure 
+ * @ingroup can
+ */
+typedef struct {
+  UNS16 cob_id;	/**< message's ID */
+  UNS8 rtr;		/**< remote transmission request. (0 if not rtr message, 1 if rtr message) */
+  UNS8 len;		/**< message's length (0 to 8) */
+  UNS8 data[8]; /**< message's datas */
+} Message;
 
-#define TASK_HANDLE RT_TASK
+#define Message_Initializer {0,0,0,{0,0,0,0,0,0,0,0}}
 
-#endif
+typedef UNS8 (*canSend_t)(Message *);
+
+#endif /* __canopen_can_h__ */
