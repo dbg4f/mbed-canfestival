@@ -56,6 +56,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define REAL32      float
 #define REAL64        double
 
+
+
+#define DEBUG_MSG_CONSOLE_ON
+
+
 #include "canopen_can.h"
 
 // MSG functions
@@ -63,27 +68,49 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // using the printf_P function
 /// Definition of MSG_ERR
 // ---------------------
-#ifdef DEBUG_ERR_CONSOLE_ON
+//#ifdef DEBUG_ERR_CONSOLE_ON
 #define MSG_ERR(num, str, val)    \
+    printf("%04x %s %d\n", num, str, val);
+
+/*
+
+\
           printf(num, ' ');       \
           printf(str);           \
           printf(val);           \
           printf('\n');
-#else
-#    define MSG_ERR(num, str, val)
-#endif
+*/
+//#else
+//#    define MSG_ERR(num, str, val)
+//#endif
 
 /// Definition of MSG_WAR
 // ---------------------
-#ifdef DEBUG_WAR_CONSOLE_ON
+//#ifdef DEBUG_WAR_CONSOLE_ON
 #define MSG_WAR(num, str, val)    \
-          printf(num, ' ');        \
+    printf("%04x %s %d\n", num, str, val);
+
+
+/*
+\
+          printf("%04x ", num);        \
           printf(str);            \
-          printf(val);            \
+          printf("%d", val);            \
           printf('\n');
-#else
-#    define MSG_WAR(num, str, val)
-#endif
+          */
+//#else
+//#    define MSG_WAR(num, str, val)
+//#endif
+
+
+#define MSG2(format, text) printf(format, text)
+
+
+
+#define MSG(text)  printf(text)
+
+
+
 
 typedef void* CAN_HANDLE;
 

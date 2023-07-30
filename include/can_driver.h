@@ -78,7 +78,7 @@ static inline void print_message(Message const *m)
 {
     int i;
     UNS8 fc;
-    MSG("id:%02x ", m->cob_id & 0x7F);
+    MSG2("id:%02x ", m->cob_id & 0x7F);
     fc = m->cob_id >> 7;
     switch(fc)
     {
@@ -133,10 +133,10 @@ static inline void print_message(Message const *m)
             _P(ABORT_TRANSFER_REQUEST)
         }
     }
-    MSG(" rtr:%d", m->rtr);
-    MSG(" len:%d", m->len);
+    MSG2(" rtr:%d", m->rtr);
+    MSG2(" len:%d", m->len);
     for (i = 0 ; i < m->len ; i++)
-        MSG(" %02x", m->data[i]);
+        MSG2(" %02x", m->data[i]);
     MSG("\n");
 }
 

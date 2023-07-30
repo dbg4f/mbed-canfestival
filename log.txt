@@ -1,0 +1,103 @@
+ID 0012002C-464B430E-20343338
+Start master
+3407 Start   0
+9999 None 9999
+9999 None 9999
+9999 startSYNC(d) 9999
+9999 lifeGuardInit(d) 9999
+9999 emergencyInit(d) 9999
+9999 slaveSendBootUp(d) 9999
+3407 Send a Boot-Up msg  0
+send id:01 NODE_GUARD  rtr:0 len:1 00
+3501 Send_NMT cs :  129
+3502     to node :  0
+send id:00 NMT  rtr:0 len:2 81 00
+recv id:02 NODE_GUARD  rtr:0 len:1 00
+3110 Received NMT nodeId :  2
+3100 The NMT is a bootup from node :  2
+TestMaster_post_SlaveBootup 2
+9999 PDOInit(d) 9999
+3501 Send_NMT cs :  1
+3502     to node :  2
+send id:00 NMT  rtr:0 len:2 01 02
+3320 DelAlarm. handle =  1
+recv id:02 NODE_GUARD  rtr:0 len:1 00
+3110 Received NMT nodeId :  2
+3100 The NMT is a bootup from node :  2
+TestMaster_post_SlaveBootup 2
+3501 Send_NMT cs :  1
+3502     to node :  2
+send id:00 NMT  rtr:0 len:2 01 02
+3320 DelAlarm. handle =  1
+recv id:02 PDO3tx  rtr:0 len:2 00 00
+3935 proceedPDO, cobID :  898
+
+
+
+ID 80080025-464B430C-20343338
+Start slave
+3407 Start   0
+9999 None 9999
+9999 None 9999
+9999 startSYNC(d) 9999
+9999 lifeGuardInit(d) 9999
+9999 emergencyInit(d) 9999
+9999 slaveSendBootUp(d) 9999
+3407 Send a Boot-Up msg  0
+send id:02 NODE_GUARD  rtr:0 len:1 00
+recv id:00 NMT  rtr:0 len:2 81 00
+3400 NMT received. for node :   0
+9999 resetSDO(d) 9999
+3a25 reset SDO line nb :  0
+3a25 init SDO line nb :  0
+3a05 StopSDO_TIMER for line :  0
+3320 DelAlarm. handle =  -1
+9999 stopSYNC(d) 9999
+3320 DelAlarm. handle =  -1
+9999 lifeGuardStop(d) 9999
+3320 DelAlarm. handle =  -1
+3320 DelAlarm. handle =  -1
+9999 emergencyStop(d) 9999
+9999 None 9999
+9999 None 9999
+9999 startSYNC(d) 9999
+9999 lifeGuardInit(d) 9999
+9999 emergencyInit(d) 9999
+9999 slaveSendBootUp(d) 9999
+3407 Send a Boot-Up msg  0
+send id:02 NODE_GUARD  rtr:0 len:1 00
+recv id:01 NODE_GUARD  rtr:0 len:1 00
+3110 Received NMT nodeId :  1
+3100 The NMT is a bootup from node :  1
+recv id:00 NMT  rtr:0 len:2 01 02
+3400 NMT received. for node :   2
+9999 PDOInit(d) 9999
+3962 Reading PDO at index :  6144
+306c   PDO is not on EVENT or synchro or not at this SYNC. Trans type :  0
+3970 next pdo index :  1
+3962 Reading PDO at index :  6145
+306c   PDO is not on EVENT or synchro or not at this SYNC. Trans type :  0
+3970 next pdo index :  2
+3962 Reading PDO at index :  6146
+3968   PDO is on EVENT. Trans type :  255
+3009   PDO CobId is :  898
+300d   Number of objects mapped :  1
+300f   got mapping parameter :  537591824
+3050     at index :  6658
+3051     sub-index :  1
+3015   End scan mapped variable 0
+306a Changes TPDO number :  2
+3320 DelAlarm. handle =  -1
+3320 DelAlarm. handle =  -1
+396d sendPDO cobId : 898
+396e      Nb octets  :  2
+send id:02 PDO3tx  rtr:0 len:2 00 00
+3970 next pdo index :  3
+3962 Reading PDO at index :  6147
+306c   PDO is not on EVENT or synchro or not at this SYNC. Trans type :  252
+3970 next pdo index :  4
+3962 Reading PDO at index :  6148
+306c   PDO is not on EVENT or synchro or not at this SYNC. Trans type :  253
+3970 next pdo index :  5
+recv id:00 NMT  rtr:0 len:2 01 02
+3400 NMT received. for node :   2

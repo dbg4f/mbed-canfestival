@@ -1,7 +1,8 @@
 #ifndef __sysdep_h__
 #define __sysdep_h__
 
-#include "config.h"
+//#include "config.h"
+#include <applicfg.h>
 
 #ifdef CANOPEN_BIG_ENDIAN
 

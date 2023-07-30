@@ -26,6 +26,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "mbed.h"
 #include "canfestival.h"
+#include "custom_def.h"
+#include "drv_debug.h"
+
+
 
 volatile unsigned char msg_received = 0;
 CAN CANopen(CAN1_RX, CAN1_TX, CAN_BAUDRATE);
@@ -44,6 +48,9 @@ INPUT    CAN_PORT is not used (only 1 avaiable)
 OUTPUT    1 if  hardware -> CAN frame
 ******************************************************************************/
 {
+    
+    dump(">>>>", m);
+    
     // convert the message from a CANopen object to a mbed object
     CANMessage msg(m->cob_id, (char*)m->data, m->len, static_cast<CANType>(m->rtr), CANStandard);
     // make sure the message was sent
@@ -79,6 +86,9 @@ OUTPUT    1 if a message received
             m->data[i] = 0;
     }
     // messge processed
+    
+    dump("<<<<", m);
+    
     return 1;
 }
 
